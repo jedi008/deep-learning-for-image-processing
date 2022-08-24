@@ -6,6 +6,7 @@ import torch
 import cv2
 import numpy as np
 from matplotlib import pyplot as plt
+from PIL import Image
 
 from build_utils import img_utils, torch_utils, utils
 from models import Darknet
@@ -75,12 +76,13 @@ def main():
         scores = pred[:, 4].detach().cpu().numpy()
         classes = pred[:, 5].detach().cpu().numpy().astype(np.int) + 1
 
-        plot_img = draw_objs(img_o[:, :, ::-1],
+        pil_img = Image.fromarray(img_o[:, :, ::-1])
+        plot_img = draw_objs(pil_img,
                              bboxes,
                              classes,
                              scores,
                              category_index=category_index,
-                             box_thresh=0.5,
+                             box_thresh=0.2,
                              line_thickness=3,
                              font='arial.ttf',
                              font_size=20)
